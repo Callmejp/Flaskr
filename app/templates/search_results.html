@@ -1,0 +1,20 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Search results for "{{query}}":</h1>
+<h2>Results in Article</h2>
+{% for post in results %}
+    {% include 'post.html' %}
+{% endfor %}
+
+<h2>Results in Forum</h2>
+{% for q in titles %}
+    <table>
+    <tr valign="top">
+        <td><a href="#"><img src="#"></a></td>
+        <td><i>{{q.timestamp}} says:</i><br> <a href="{{ url_for('discuss', pk = q.id) }}">{{q.title}}</a> </td>
+    </tr>
+    </table>
+{% endfor %}
+{% endblock %}

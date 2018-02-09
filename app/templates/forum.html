@@ -1,0 +1,37 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+<hr>
+<h1>Post Your Question</h1>
+<form action="" method="post" name="quiz">
+    {{form.hidden_tag()}}
+    <table>
+        <tr>
+            <td>Question Title:</td>
+            <td>
+                {{form.title(size = 24)}}
+            </td>
+        </tr>
+        <tr>
+            <td>More Details:</td>
+            <td>{{form.body(cols = 32, rows = 4)}}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Post it"></td>
+        </tr>
+    </table>
+</form>
+<!-- posts is a Paginate object -->
+{% for q in questions.items %}
+    <table>
+    <tr valign="top">
+        <td><a href="#"><img src="#"></a></td>
+        <td><i>{{q.timestamp}} says:</i><br> <a href="{{ url_for('discuss', pk = q.id) }}">{{q.title}}</a> </td>
+    </tr>
+    </table>
+{% endfor %}
+{% if questions.has_prev %}<a href="{{ url_for('forum', page = questions.prev_num) }}"><< Newer posts</a>{% else %}<< Newer posts{% endif %} |
+{% if questions.has_next %}<a href="{{ url_for('forum', page = questions.next_num) }}">Older posts >></a>{% else %}Older posts >>{% endif %}
+{% endblock %}

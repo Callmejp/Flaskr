@@ -1,0 +1,32 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+<p>{{title}}</p>
+{% for c in cs.items %}
+    <table>
+    <tr valign="top">
+        <td><a href="#"><img src="{{c.participant.avatar(50)}}"></a></td>
+        <td><i>{{c.participant.nickname}} says:</i><br>{{c.body}}</td>
+    </tr>
+    </table>
+{% endfor %}
+{% if cs.has_prev %}<a href="{{ url_for('discuss', pk=pk, page = cs.prev_num) }}"><< Newer posts</a>{% else %}<< Newer posts{% endif %} |
+{% if cs.has_next %}<a href="{{ url_for('discuss', pk=pk, page = cs.next_num) }}">Older posts >></a>{% else %}Older posts >>{% endif %}
+<div>
+    <h1>Post Your Answer</h1>
+    <form action="" method="post" name="card">
+        {{form.hidden_tag()}}
+    <table>
+        <tr>
+            <td>Please enter your content</td>
+            <td>{{form.answer(cols = 32, rows = 4)}}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Post it"></td>
+        </tr>
+    </table>
+    </form>
+</div>
+{% endblock %}
