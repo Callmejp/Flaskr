@@ -8,4 +8,4 @@
 3. 有论坛效果
 
 ![markdown](https://github.com/Callmejp/Flaskr/blob/master/2.png)    
-![markdown](https://github.com/Callmejp/Flaskr/blob/master/3.png)   
+![compile](https://github.com/Callmejp/Flaskr/blob/master/3.png)   
