@@ -5,7 +5,7 @@ from flask_openid import *
 from config import *
 import flask_whooshalchemyplus
 from flask_whooshalchemyplus import index_all
-
+from flask_pagedown import PageDown
 
 app = Flask(__name__)
 app.config.from_object('config')
@@ -18,6 +18,7 @@ oid = OpenID(app, os.path.join(basedir, 'tmp'))
 
 flask_whooshalchemyplus.init_app(app)
 index_all(app)
+pagedown = PageDown(app)
 
 if not app.debug:
     import logging

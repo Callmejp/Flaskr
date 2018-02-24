@@ -1,6 +1,7 @@
 from app import db, app
 from hashlib import md5
 from jieba.analyse.analyzer import ChineseAnalyzer
+import flask_whooshalchemyplus as whooshalchemy
 
 followers = db.Table('followers',
     db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
@@ -69,14 +70,12 @@ class User(db.Model):
         return '<User %r>' % (self.nickname)
 
 
-import flask_whooshalchemyplus as whooshalchemy
-
-
 class Post(db.Model):
-    __searchable__ = ['body']
-    __analyzer__ = ChineseAnalyzer()
+    __searchable__ = ['body', 'title']
+    #__analyzer__ = ChineseAnalyzer()
 
-    id = db.Column(db.Integer, primary_key = True)
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100))
     body = db.Column(db.String(140))
     timestamp = db.Column(db.DateTime)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -87,7 +86,7 @@ class Post(db.Model):
 
 class Question(db.Model):
     __searchable__ = ['title']
-    __analyzer__ = ChineseAnalyzer()
+    #__analyzer__ = ChineseAnalyzer()
 
     id = db.Column(db.Integer, primary_key=True)
     timestamp = db.Column(db.DateTime)

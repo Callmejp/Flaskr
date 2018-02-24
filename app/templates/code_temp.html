@@ -1,0 +1,118 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+<script src="http://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js"></script>
+<link href="static/codemirror/lib/codemirror.css" rel="stylesheet" >
+<script src="static/codemirror/lib/codemirror.js"></script>
+
+<link href="static/codemirror/theme/3024-night.css" rel="stylesheet">
+<link href="static/codemirror/theme/erlang-dark.css" rel="stylesheet">
+
+<script src="static/codemirror/mode/clike/clike.js"></script>
+<script src="static/codemirror/mode/perl/perl.js"></script>
+<script src="static/codemirror/mode/python/python.js"></script>
+
+<!--选择脚本编码代码-->
+<div class="controls">
+    <input class="ck-code" type="radio" name="script_once_type" value="perl" id="script_once_type1" checked> perl
+     <input class="ck-code" type="radio" name="script_once_type" value="c++" id="script_once_type2"> c++
+     <input class="ck-code" type="radio" name="script_once_type" value="python" id="script_once_type3"> python
+</div>
+
+<!--选择脚本风格代码-->
+<div class="controls">
+    <select id='select'>
+         <option>default</option>
+         <option>3024-night</option>
+         <option selected>erlang-dark</option>
+    </select>
+</div>
+
+<!--textarea-->
+<textarea id="script_once_code">
+    #!/bin/sh
+</textarea>
+<button id="btn">submit</button>
+<textarea id="code2" class="hide">
+
+</textarea>
+
+<script>
+    var editor = CodeMirror.fromTextArea($("#script_once_code")[0], { //script_once_code为你的textarea的ID号
+        lineNumbers: true,//是否显示行号
+        mode:"perl",　//默认脚本编码
+        lineWrapping:true, //是否强制换行
+        indentUnit: 4
+    });
+
+    var editor2 = CodeMirror.fromTextArea($("#code2")[0], { //script_once_code为你的textarea的ID号
+        lineNumbers: true,//是否显示行号
+        mode:"text/html",　//默认脚本编码
+        lineWrapping:true, //是否强制换行
+        indentUnit: 4
+    });
+
+    //选择界面风格JS
+$('#select').change(function(){
+     var theme = $('#select').val();
+         editor.setOption("theme", theme); //editor.setOption()为codeMirror提供的设置风格的方法
+ });
+
+//选择脚本类型JS
+var txt1=$("#script_once_code").val();
+var txt2='';
+var txt3=$("#code2").val();
+$(".ck-code").click(function(){
+
+       var txt=editor.getValue(); //editor.getValue()获取textarea中的值
+       var lang=$(this).prop("id");
+       if(lang=="script_once_type1") {
+               editor.setOption("mode","perl");//editor.setOption()设置脚本类型
+                   editor.setValue(txt1);// editor.setValue()设置textarea中的值
+       }
+       else if(lang=="script_once_type2") {
+               editor.setOption("mode","clike");
+               editor.setValue(txt2);
+       }
+       else {
+               editor.setOption("mode","python");
+               editor.setValue(txt3);
+
+       }
+});
+
+
+        $("#btn").click(function(){
+            editor2.setValue("The Programme is running!");
+            var content = editor.getValue();
+            var language = $("input[name='script_once_type']:checked").val();
+            console.log(content);
+            console.log(language);
+            var data= {
+                data: JSON.stringify({
+                    "code":content,
+                    "id":language
+                }),
+            }
+                $.ajax({
+                url:'http://localhost:5000/code',
+                type:'POST',
+                data:data,
+                dataType: 'json',
+                success:function(res){
+                    //console.log(res);
+                    var result = res["errors"];
+                    if(res["errors"] == "")result = res["output"]
+                    console.log(result);
+                    editor2.setValue(result);
+                },
+                error:function (res) {
+                    console.log("fail");
+                }
+
+            })
+        })
+
+</script>
+{% endblock %}

@@ -3,25 +3,7 @@
 
 {% block content %}
 <h1>Hi, {{g.user.nickname}}!</h1>
-<form action="" method="post" name="post">
-    {{form.hidden_tag()}}
-    <table>
-        <tr>
-            <td>Say something:</td>
-            <td>{{ form.post(size = 30, maxlength = 140) }}</td>
-            <td>
-            {% for error in form.errors.post %}
-            <span style="color: red;">[{{error}}]</span><br>
-            {% endfor %}
-            </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td><input type="submit" value="Post!"></td>
-            <td></td>
-        </tr>
-    </table>
-</form>
+<p>以下是关注用户的文章最新动态</p>
 <!-- posts is a Paginate object -->
 {% for post in posts.items %}
     {% include 'post.html' %}

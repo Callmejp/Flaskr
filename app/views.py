@@ -4,8 +4,10 @@ from .forms import *
 from app import app, db, lm, oid
 from .models import User, Post, Question, Card
 from datetime import datetime
-from config import POSTS_PER_PAGE, MAX_SEARCH_RESULTS
-from .run_code import *
+from config import POSTS_PER_PAGE, MAX_SEARCH_RESULTS, languageId
+from .run_code import pa_chong
+import markdown
+
 
 @app.before_request
 def before_request():
@@ -40,23 +42,23 @@ def internal_error(error):
     return render_template('500.html'), 500
 
 
-@app.route('/', methods = ['GET', 'POST'])
-@app.route('/index', methods = ['GET', 'POST'])
-@app.route('/index/<int:page>', methods = ['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/index', methods=['GET', 'POST'])
+@app.route('/index/<int:page>', methods=['GET', 'POST'])
 @login_required
 def index(page=1):
+    """
     form = PostForm()
     if form.validate_on_submit():
         post = Post(body=form.post.data, timestamp=datetime.utcnow(), author=g.user)
         db.session.add(post)
         db.session.commit()
         flash('Your post is now live!')
-        return redirect(url_for('index'))
+        return redirect(url_for('index'))"""
     posts = g.user.followed_posts().paginate(page, POSTS_PER_PAGE, False)
     return render_template('index.html',
-        title = 'Home',
-        form = form,
-        posts = posts)
+        title='Home',
+        posts=posts)
 
 
 def aft_login(e, p):
@@ -169,7 +171,7 @@ def unfollow(nickname):
     return redirect(url_for('user', nickname=nickname))
 
 
-@app.route('/search', methods = ['POST'])
+@app.route('/search', methods=['POST'])
 @login_required
 def search():
     if not g.search_form.validate_on_submit():
@@ -180,8 +182,9 @@ def search():
 @app.route('/search_results/<query>')
 @login_required
 def search_results(query):
-    print(query)
+    #print(query)
     results = Post.query.whoosh_search(query, MAX_SEARCH_RESULTS).all()
+    print(results)
     titles = Question.query.whoosh_search(query, MAX_SEARCH_RESULTS).all()
     print(titles)
     return render_template('search_results.html',
@@ -228,7 +231,7 @@ def discuss(pk, page=1):
         db.session.add(card)
         db.session.commit()
         flash('Your answer is now live!')
-        return redirect(url_for('discuss', id=pk))
+        return redirect(url_for('discuss', pk=pk))
 
     cards = Card.query.filter_by(question_id=pk).order_by(Card.timestamp).paginate(page, POSTS_PER_PAGE, False)
     question = Question.query.filter_by(id=pk)
@@ -243,6 +246,7 @@ def discuss(pk, page=1):
 
 @app.route('/code', methods=['POST', 'GET'])
 def code():
+    """
     form = CompileForm()
     d = dict()
     if form.validate():
@@ -255,4 +259,49 @@ def code():
                                d=d)
     return render_template('code.html',
                            form=form,
-                           d=d)
+                           d=d)"""
+    if request.method == 'POST':
+        data = json.loads(request.form.get('data'))
+        content = data["code"]
+        language = languageId[data["id"]]
+        #print(content)
+        #print(language)
+        d = {
+            'code': content,
+            'language': language
+        }
+        dic = pa_chong(d)
+        #print(dic)
+        return dic
+    return render_template('code_temp.html')
+
+
+@app.route('/write', methods=['POST', 'GET'])
+def write():
+    form = PageDownForm()
+    if request.method == 'POST':
+        if form.title.data == "" or form.pagedown.data == "":
+            flash("内容不能为空")
+            return redirect(url_for('index'))
+        post = Post(body=form.pagedown.data, title=form.title.data, timestamp=datetime.utcnow(), author=g.user)
+        db.session.add(post)
+        db.session.commit()
+        print(form.title.data == "")
+        flash('Your article is now live!')
+        return redirect(url_for('index'))
+    return render_template('write.html',
+                           form=form)
+
+
+@app.route('/article/<pk>', methods=['GET', 'POST'])
+def article(pk):
+    a = Post.query.filter_by(id=pk)
+    title = a[0].title
+    body = a[0].body
+    md = markdown.markdown(body)
+    html = '{% extends "base.html" %}{% block content %}<h1>标题：' + title + '<br>内容如下：</h1><div>' + str(md) + '</div>{% endblock %}'
+    html = html.encode('utf-8')
+    print(html)
+    with open('app/templates/article.html', 'wb') as f:
+        f.write(html)
+    return render_template('article.html')

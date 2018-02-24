@@ -20,3 +20,7 @@ POSTS_PER_PAGE = 5
 
 WHOOSH_BASE = os.path.join(basedir, 'search.db')
 MAX_SEARCH_RESULTS = 50
+
+url = 'https://m.runoob.com/api/compile.php'
+headers = {'User-Agent': 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)', 'Host': 'm.runoob.com'}
+languageId = {'perl': '14', 'c++': '7', 'python': '15'}

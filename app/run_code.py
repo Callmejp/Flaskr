@@ -2,6 +2,17 @@ import os
 import time
 import subprocess
 import sys
+from urllib import request, parse
+from config import url, headers
+
+
+def pa_chong(d):
+    data = bytes(parse.urlencode(d), encoding='utf8')
+    req = request.Request(url=url, data=data, headers=headers, method='POST')
+    response = request.urlopen(req)
+    dic = response.read().decode('utf-8')
+    return dic
+
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 EXEC = sys.executable

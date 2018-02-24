@@ -2,18 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     {% if title %}
     <title>{{title}} - microblog</title>
     {% else %}
     <title>microblog</title>
     {% endif %}
+    {{ pagedown.include_pagedown() }}
 </head>
 <body>
     <div>Microblog:
     <a href="{{ url_for('index') }}">Home</a>
     {% if g.user.is_authenticated %}
     | <a href="{{ url_for('user', nickname = g.user.nickname) }}">Your Profile</a>
-
+    | <a href="{{ url_for('write') }}">Write</a>
     | <a href="{{ url_for('look') }}">Article</a>
     | <a href="{{ url_for('forum') }}">Forum</a>
     | <a href="{{ url_for('logout') }}">Logout</a>

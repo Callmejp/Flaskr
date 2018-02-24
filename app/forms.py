@@ -1,5 +1,6 @@
 from flask_wtf import Form
-from wtforms import StringField, BooleanField, TextAreaField, SelectField
+from wtforms import StringField, BooleanField, TextAreaField, SubmitField
+from flask_pagedown.fields import PageDownField
 from wtforms.validators import DataRequired, Email, Length
 from app.models import User
 
@@ -30,9 +31,16 @@ class EditForm(Form):
 
         return True
 
-
+##################
 class PostForm(Form):
     post = StringField('post', validators=[DataRequired()])
+
+
+class PageDownForm(Form):
+    title = StringField('title', validators=[DataRequired()])
+    pagedown = PageDownField('Enter your markdown')
+    submit = SubmitField('Submit')
+#####################
 
 
 class SearchForm(Form):

@@ -1,0 +1,32 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+<h1>可在编辑时预览</h1>
+<hr>
+<div style="float:left;width:100%;">
+    <div style="width:50%; float:left;">
+        <form action="" method="post" name="markdown">
+            <table>
+                <tr>
+                    <td>Article Title:</td>
+                    <td>{{form.title(size = 24)}}</td>
+                </tr>
+                <tr>
+                    <td>Article Body:</td>
+                    <td>{{ form.pagedown(only_input=True, rows=30) }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.submit }}</td>
+                </tr>
+            </table>
+
+        </form>
+    </div>
+    <div style="width:50%; float:right;">
+        {{ form.pagedown(only_preview=True) }}
+    </div>
+</div>
+<script src="http://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="/static/js/write.js"></script>
+{% endblock %}
