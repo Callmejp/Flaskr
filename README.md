@@ -7,5 +7,5 @@
 2. 可以在线编译运行语言
 3. 有论坛效果
 
-![markdown](https://github.com/Callmejp/Flaskr/blob/master/2.png)    
-![compile](https://github.com/Callmejp/Flaskr/blob/master/3.png)   
+![markdown](https://github.com/Callmejp/Flaskr/blob/master/2.PNG)    
+![compile](https://github.com/Callmejp/Flaskr/blob/master/3.PNG)   
