@@ -1,5 +1,6 @@
 from flask_wtf import Form
-from wtforms import StringField, BooleanField, TextAreaField, SubmitField
+from wtforms import StringField, BooleanField, TextAreaField, SubmitField, DateField
+from flask_wtf.file import FileField, FileAllowed, FileRequired
 from flask_pagedown.fields import PageDownField
 from wtforms.validators import DataRequired, Email, Length
 from app.models import User
@@ -39,7 +40,7 @@ class PostForm(Form):
 class PageDownForm(Form):
     title = StringField('title', validators=[DataRequired()])
     pagedown = PageDownField('Enter your markdown')
-    submit = SubmitField('Submit')
+
 #####################
 
 
@@ -58,3 +59,12 @@ class CardForm(Form):
 
 class CompileForm(Form):
     code = TextAreaField('code', validators=[DataRequired()])
+
+
+class WcForm(Form):
+    picture = FileField('upload_pc', validators=[
+        FileAllowed(['jpg', 'jpeg', 'png'], 'pictures only'),
+        FileRequired('no picture upload')
+    ])
+    time1 = DateField('dt1')
+    time2 = DateField('dt2')

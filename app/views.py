@@ -4,9 +4,9 @@ from .forms import *
 from app import app, db, lm, oid
 from .models import User, Post, Question, Card
 from datetime import datetime
-from config import POSTS_PER_PAGE, MAX_SEARCH_RESULTS, languageId
-from .run_code import pa_chong
-import markdown
+from config import POSTS_PER_PAGE, MAX_SEARCH_RESULTS, languageId, basedir
+from .run_code import pa_chong, make_wc
+import markdown, time
 
 
 @app.before_request
@@ -264,14 +264,14 @@ def code():
         data = json.loads(request.form.get('data'))
         content = data["code"]
         language = languageId[data["id"]]
-        #print(content)
-        #print(language)
+        print(content)
+        print(language)
         d = {
             'code': content,
             'language': language
         }
         dic = pa_chong(d)
-        #print(dic)
+        print(dic)
         return dic
     return render_template('code_temp.html')
 
@@ -279,10 +279,12 @@ def code():
 @app.route('/write', methods=['POST', 'GET'])
 def write():
     form = PageDownForm()
+
     if request.method == 'POST':
         if form.title.data == "" or form.pagedown.data == "":
-            flash("内容不能为空")
-            return redirect(url_for('index'))
+            flash("标题或文章内容不能为空")
+            return render_template('write.html',
+                                   form=form)
         post = Post(body=form.pagedown.data, title=form.title.data, timestamp=datetime.utcnow(), author=g.user)
         db.session.add(post)
         db.session.commit()
@@ -305,3 +307,25 @@ def article(pk):
     with open('app/templates/article.html', 'wb') as f:
         f.write(html)
     return render_template('article.html')
+
+
+@app.route('/wordcloud', methods=['GET', 'POST'])
+def wc():
+    form = WcForm()
+    if form.validate_on_submit():
+        print("come in")
+        pic = form.picture.data
+        pic.save(basedir + "\\app\\static\\try.jpg")
+        st_time = form.time1.data
+        ed_time = form.time2.data
+        data = Card.query.all()
+        make_wc(st_time, ed_time, data)
+        return redirect(url_for('show_wc'))
+    return render_template('wc.html',
+                           form=form)
+
+
+@app.route('/show_wordcloud', methods=['POST', 'GET'])
+def show_wc():
+    return render_template('show.html',
+                           val1=time.time())

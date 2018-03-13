@@ -2,12 +2,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Hi, {{g.user.nickname}}!</h1>
-<p>以下是关注用户的文章最新动态</p>
+<h1 class="lead">Hi, {{g.user.nickname}}!</h1>
+<p class="lead">以下是关注用户的文章最新动态</p>
 <!-- posts is a Paginate object -->
 {% for post in posts.items %}
     {% include 'post.html' %}
 {% endfor %}
-{% if posts.has_prev %}<a href="{{ url_for('index', page = posts.prev_num) }}"><< Newer posts</a>{% else %}<< Newer posts{% endif %} |
-{% if posts.has_next %}<a href="{{ url_for('index', page = posts.next_num) }}">Older posts >></a>{% else %}Older posts >>{% endif %}
+<nav>
+    <ul class="pager">
+{% if posts.has_prev %}<li><a href="{{ url_for('index', page = posts.prev_num) }}"><< Newer posts</a></li>{% else %}<li><a href="#"><< Newer posts</a></li>{% endif %}
+{% if posts.has_next %}<li><a href="{{ url_for('index', page = posts.next_num) }}">Older posts >></a></li>{% else %}<li><a href="#">Older posts >></a></li>{% endif %}
+    </ul>
+</nav>
 {% endblock %}

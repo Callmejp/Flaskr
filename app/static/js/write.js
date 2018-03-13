@@ -11,4 +11,11 @@ $(document).ready(function(){
             this.setSelectionRange(start + indent.length, start + selected.length);
         }
     });
+
+    $("#title").addClass("form-control");
+    $("#flask-pagedown-pagedown").addClass("form-control");
+
+    $("#flask-pagedown-pagedown").css({"resize":"none","overflow":"scroll"});
+
+
 });

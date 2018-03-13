@@ -1,9 +1,12 @@
-import os
-import time
-import subprocess
-import sys
+import jieba
+from wordcloud import *
 from urllib import request, parse
 from config import url, headers
+import matplotlib.pyplot as plt
+import Image
+import os
+
+basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 def pa_chong(d):
@@ -14,54 +17,52 @@ def pa_chong(d):
     return dic
 
 
-basedir = os.path.abspath(os.path.dirname(__file__))
-EXEC = sys.executable
+def get_txt(st, ed, data):
+    print(st, ed)
+    tmp = st
+    st = min(st, ed)
+    ed = max(tmp, ed)
+    txt = ""
+    for d in data:
+        #day = str(d.timestamp)
+        day = d.timestamp.date()
+        #day = day.split(' ')[0]
+        if st <= day and day <= ed:
+            txt = txt + " " + d.body
+    print(txt)
+    with open(basedir + '\\static\\try.txt', 'w') as f:
+        f.write(txt)
 
 
-def get_version():
-    v = sys.version_info
-    version = "python %s.%s" % (v.major, v.minor)
-    return version
+def make_wc(st, ed, data):
+    get_txt(st, ed, data)
 
+    # 打开本体TXT文件
+    text = open(basedir + '\\static\\try.txt').read()
 
-def decode(s):
-    try:
-        return s.decode('utf-8')
-    except UnicodeDecodeError:
-        return s.decode('gbk')
+    # 结巴分词 cut_all=True 设置为全模式
+    wordlist = jieba.cut(text, cut_all=True)
 
+    # 使用空格连接 进行中文分词
+    wl_space_split = " ".join(wordlist)
+    print(wl_space_split)
 
-def runcode(code):
-    print(code)
-    print(basedir)
-    filename = int(time.time())
-    filename = str(basedir) + '\\' + str(filename) + '.py'
-    r = dict()
-    r["version"] = get_version()
+    # 对分词后的文本生成词云
+    font = r'C:\Windows\Fonts\simfang.ttf'
+    my_wordcloud = WordCloud(
+        background_color='white',
+        font_path=font
+    ).generate(wl_space_split)
+    #调整大小
+    file = basedir + '\\static\\try.jpg'
+    im = Image.open(file)
+    (x, y) = im.size
+    x_s = 1280
+    y_s = y * x_s // x
+    out = im.resize((x_s, y_s), Image.ANTIALIAS)
+    out.save(file)
 
-    with open(filename, 'w') as f:
-        f.write(code)
+    backgroud_Image = plt.imread(file)
+    img_colors = ImageColorGenerator(backgroud_Image)
 
-
-    try:
-        # subprocess.check_output 是 父进程等待子进程完成，返回子进程向标准输出的输出结果
-        # stderr是标准输出的类型
-        outdata = decode(subprocess.check_output([EXEC, filename], stderr=subprocess.STDOUT, timeout=5))
-        # 成功返回的数据
-        r['output'] = outdata
-        r["code"] = "Success"
-    except subprocess.CalledProcessError as e:
-        # e.output是错误信息标准输出
-        # 错误返回的数据
-        r["code"] = 'Error'
-        r["output"] = decode(e.output)
-    finally:
-        # 删除文件(其实不用删除临时文件会自动删除)
-        print(r)
-        try:
-            os.remove(filename)
-        except Exception as e:
-            print(e)
-        finally:
-            return r
-
+    WordCloud.to_file(my_wordcloud.recolor(color_func=img_colors), file)

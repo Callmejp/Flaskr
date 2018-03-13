@@ -2,27 +2,38 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Edit Your Profile</h1>
-<form action="" method="post" name="edit">
-    {{form.hidden_tag()}}
-    <table>
-        <tr>
-            <td>Your nickname:</td>
-            <td>
+<h1 class="text-center">Edit Your Profile</h1>
+<div class="panel panel-default">
+    <div class="panel-body">
+
+        <h1 class="lead">Sign In</h1>
+        <form action="" method="post" name="edit">
+            {{form.hidden_tag()}}
+            <div class="form-group">
+                <label for="nickname">Your nickname:</label>
                 {{form.nickname(size = 24)}}
+
                 {% for error in form.errors.nickname %}
                 <br><span style="color: red;">[{{error}}]</span>
                 {% endfor %}
-            </td>
-        </tr>
-        <tr>
-            <td>About yourself:</td>
-            <td>{{form.about_me(cols = 32, rows = 4)}}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td><input type="submit" value="Save Changes"></td>
-        </tr>
-    </table>
-</form>
+
+            </div>
+            <div class="form-group">
+                <label for="about_me">About yourself:</label>
+                {{form.about_me(cols = 32, rows = 4)}}
+            </div>
+
+
+            <button type="submit" class="btn btn-default">Save Changes</button>
+        </form>
+
+    </div>
+</div>
+
+<script>
+        $(document).ready(function(){
+            $("#nickname").addClass("form-control");
+            $("#about_me").addClass("form-control");
+        });
+</script>
 {% endblock %}

@@ -1,6 +1,7 @@
-<table>
-    <tr valign="top">
-        <td><a href="{{ url_for('user', nickname = post.author.nickname) }}"><img src="{{post.author.avatar(50)}}"></a></td><td><i>{{post.author.nickname}} says:</i>
-        <br><a href="{{ url_for('article', pk = post.id) }}">{{post.title}}</a></td>
+<table class="table table-striped table-hover">
+    <tr class="lead">
+        <td><a href="{{ url_for('user', nickname = post.author.nickname) }}"><img src="{{post.author.avatar(50)}}"></a></td>
+        <td><i>{{post.author.nickname}} says:</i>
+        <a href="{{ url_for('article', pk = post.id) }}">{{post.title}}</a></td>
     </tr>
 </table>

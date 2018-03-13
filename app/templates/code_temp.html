@@ -2,7 +2,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<script src="http://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js"></script>
+
 <link href="static/codemirror/lib/codemirror.css" rel="stylesheet" >
 <script src="static/codemirror/lib/codemirror.js"></script>
 
@@ -13,30 +13,68 @@
 <script src="static/codemirror/mode/perl/perl.js"></script>
 <script src="static/codemirror/mode/python/python.js"></script>
 
-<!--选择脚本编码代码-->
-<div class="controls">
-    <input class="ck-code" type="radio" name="script_once_type" value="perl" id="script_once_type1" checked> perl
-     <input class="ck-code" type="radio" name="script_once_type" value="c++" id="script_once_type2"> c++
-     <input class="ck-code" type="radio" name="script_once_type" value="python" id="script_once_type3"> python
+<div class="panel panel-success lead">
+    <div class="panel-heading">
+        <h3 class="panel-title">Choose the language and the theme you like, then just submit it</h3>
+    </div>
+
+    <div class="panel-body">
+        <form class="form-inline">
+            <label>Language:</label>
+
+            <div class="radio">
+                <label>
+                    <input class="ck-code" type="radio" name="script_once_type" value="perl" id="script_once_type1" checked> perl
+                </label>
+            </div>
+
+            <div class="radio">
+                <label>
+                    <input class="ck-code" type="radio" name="script_once_type" value="c++" id="script_once_type2"> c++
+                </label>
+            </div>
+
+            <div class="radio">
+                <label>
+                    <input class="ck-code" type="radio" name="script_once_type" value="python" id="script_once_type3"> python
+                </label>
+            </div>
+            <br><br>
+
+            <div class="form-group">
+                <label>Theme:</label>
+                <select id='select' class="form-control">
+                     <option>default</option>
+                     <option>3024-night</option>
+                     <option selected>erlang-dark</option>
+                </select>
+            </div>
+            <br><br>
+                <!--textarea-->
+            <textarea id="script_once_code" class="form-control">
+
+            </textarea>
+            <br>
+
+
+        </form>
+         <button id="btn" class="btn btn-default">submit</button>
+    </div>
 </div>
 
-<!--选择脚本风格代码-->
-<div class="controls">
-    <select id='select'>
-         <option>default</option>
-         <option>3024-night</option>
-         <option selected>erlang-dark</option>
-    </select>
+
+<div class="panel panel-warning">
+    <div class="panel-heading">You Result will be there</div>
+    <div class="panel-body">
+        <textarea id="code2" class="hide">
+
+        </textarea>
+    </div>
 </div>
 
-<!--textarea-->
-<textarea id="script_once_code">
-    #!/bin/sh
-</textarea>
-<button id="btn">submit</button>
-<textarea id="code2" class="hide">
 
-</textarea>
+
+
 
 <script>
     var editor = CodeMirror.fromTextArea($("#script_once_code")[0], { //script_once_code为你的textarea的ID号
