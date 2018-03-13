@@ -9,4 +9,6 @@
 4. 可以制作一段时间的论坛数据的词云图
 
 ![markdown](https://github.com/Callmejp/Flaskr/blob/master/2.PNG)    
-![compile](https://github.com/Callmejp/Flaskr/blob/master/3.PNG)   
+![compile](https://github.com/Callmejp/Flaskr/blob/master/3.PNG)  
+![compile](https://github.com/Callmejp/Flaskr/blob/master/4.PNG) 
+![compile](https://github.com/Callmejp/Flaskr/blob/master/5.PNG)  
