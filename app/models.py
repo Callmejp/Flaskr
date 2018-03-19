@@ -9,6 +9,30 @@ followers = db.Table('followers',
 )
 
 
+AttendGame = db.Table('AttendGame',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('game_id', db.Integer, db.ForeignKey('game.id')),
+    db.Column('code_content', db.String(1000))
+)
+
+
+class Game(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    problem_title = db.Column(db.String(140))
+    problem_description = db.Column(db.String(1400))
+
+    timestamp = db.Column(db.DateTime)
+    start_time = db.Column(db.DateTime)
+    end_time = db.Column(db.DateTime)
+    long_time = db.Column(db.Integer)
+
+    attend_person = db.Column(db.Integer)
+    max_person = db.Column(db.Integer)
+
+    attenders = db.relationship('User', secondary=AttendGame,
+                                backref=db.backref('games', lazy='dynamic'))
+
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nickname = db.Column(db.String(64), index=True, unique=True)
@@ -111,4 +135,10 @@ class Card(db.Model):
 
     def __repr__(self):
         return '<Card %r>' % (self.body)
+
+
+
+
+
+
 

@@ -1,0 +1,100 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+<link href="{{url_for('static', filename='codemirror.css') }}" rel="stylesheet" >
+<script src="{{url_for('static', filename='codemirror.js') }}"></script>
+<script src="{{url_for('static', filename='clike.js') }}"></script>
+
+<div class="panel panel-success">
+    <div class="panel-body">
+        <a class="btn btn-info" role="button" data-toggle="collapse" href="#title" aria-expanded="true">
+            Problem Title
+        </a>
+
+        <div class="collapse in" id="title">
+            <div class="well">
+                {{ c.problem_title }}
+            </div>
+        </div>
+
+        <a class="btn btn-info" role="button" data-toggle="collapse" href="#body" aria-expanded="true">
+            Problem Description
+        </a>
+
+        <div class="collapse in" id="body">
+            <div class="well">
+                {{ c.problem_description }}
+            </div>
+        </div>
+
+        <a class="btn btn-info" role="button" data-toggle="collapse" href="#people" aria-expanded="true">
+            Attenders
+        </a>
+
+        <div class="collapse in" id="people">
+            <div class="well">
+                {% for u in users %}
+                    <a href="{{ url_for('user', nickname = u.nickname) }}"><img src="{{u.avatar(50)}}"></a>
+                {% endfor %}
+
+            </div>
+        </div>
+
+        {% if datetime.now() >= c.start_time and datetime.now() <= c.end_time %}
+            <a class="btn btn-info" role="button" data-toggle="collapse" href="#code" aria-expanded="true">
+                post your code here
+            </a>
+            <div class="collapse in" id="code">
+                <div class="well">
+                  <div>
+                      <textarea id="code_area" class="form-control">
+
+                      </textarea>
+                  </div>
+                  <p id="response"></p>
+                  <button class="btn btn-info" id="btn">Post and Save</button>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+
+</div>
+
+<script>
+    $(document).ready(function() {
+        var editor = CodeMirror.fromTextArea($("#code_area")[0], {
+            lineNumbers: true,//是否显示行号
+            mode:"clike",　//默认脚本编码
+            lineWrapping:true, //是否强制换行
+            indentUnit: 4,
+        });
+
+            $("#btn").click(function(){
+                var content = editor.getValue();
+                var url = window.location.href;
+
+                var data= {
+                    data: JSON.stringify({
+                        "code":content,
+                    }),
+                }
+
+                $.ajax({
+                    url:url,
+                    type:'POST',
+                    data:data,
+                    dataType: 'json',
+                    success:function(res){
+                        $("#response").text("Your code has been saved");
+                    },
+                    error:function (res) {
+                        console.log("fail");
+                        $("#response").text("Post failed");
+                    }
+                })
+            });
+    });
+</script>
+{% endblock %}

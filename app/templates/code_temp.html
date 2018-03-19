@@ -3,15 +3,15 @@
 
 {% block content %}
 
-<link href="static/codemirror/lib/codemirror.css" rel="stylesheet" >
-<script src="static/codemirror/lib/codemirror.js"></script>
+<link href="{{url_for('static', filename='codemirror.css') }}" rel="stylesheet" >
+<script src="{{url_for('static', filename='codemirror.js') }}"></script>
 
-<link href="static/codemirror/theme/3024-night.css" rel="stylesheet">
-<link href="static/codemirror/theme/erlang-dark.css" rel="stylesheet">
+<link href="{{url_for('static', filename='3024-night.css') }}" rel="stylesheet">
+<link href="{{url_for('static', filename='erlang-dark.css') }}" rel="stylesheet">
 
-<script src="static/codemirror/mode/clike/clike.js"></script>
-<script src="static/codemirror/mode/perl/perl.js"></script>
-<script src="static/codemirror/mode/python/python.js"></script>
+<script src="{{url_for('static', filename='clike.js') }}"></script>
+<script src="{{url_for('static', filename='perl.js') }}"></script>
+<script src="{{url_for('static', filename='python.js') }}"></script>
 
 <div class="panel panel-success lead">
     <div class="panel-heading">

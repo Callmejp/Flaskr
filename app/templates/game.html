@@ -1,0 +1,15 @@
+<tr class="lead">
+    <td><a href="{{ url_for('contest_detail', title=c.problem_title, gid = c.id) }}">{{ c.problem_title }}</a></td>
+    <td>{{ c.max_person - c.attend_person}} people</td>
+    <td>{{ c.start_time }}</td>
+    <td>{{ c.long_time }}(mins)</td>
+    <td>
+        {% if datetime.now() > c.end_time %}
+            <button type="button" class="btn btn-success">End</button>
+        {% elif datetime.now() < c.start_time %}
+            <button type="button" class="btn btn-info">Waiting</button>
+        {% else %}
+            <button type="button" class="btn btn-danger">Running</button>
+        {% endif %}
+    </td>
+</tr>

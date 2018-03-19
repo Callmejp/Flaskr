@@ -2,15 +2,21 @@
 {% extends "base.html" %}
 
 {% block content %}
-<hr>
+
 <!-- posts is a Paginate object -->
-{% for post in posts.items %}
-    {% include 'post.html' %}
-{% endfor %}
-<nav>
-    <ul class="pager">
-{% if posts.has_prev %}<li><a href="{{ url_for('look', page = posts.prev_num) }}"><< Newer posts</a></li>{% else %}<li><a href="#"><< Newer posts</a></li>{% endif %}
-{% if posts.has_next %}<li><a href="{{ url_for('look', page = posts.next_num) }}">Older posts >></a></li>{% else %}<li><a href="#">Older posts >></a></li>{% endif %}
-    </ul>
-</nav>
+<div class="panel panel-success">
+    <div class="panel-heading">You can see th articles writen by all users there!</div>
+    <div class="panel-body">
+        {% for post in posts.items %}
+            {% include 'post.html' %}
+        {% endfor %}
+        <nav>
+            <ul class="pager">
+        {% if posts.has_prev %}<li><a href="{{ url_for('look', page = posts.prev_num) }}"><< Newer posts</a></li>{% else %}<li><a href="#"><< Newer posts</a></li>{% endif %}
+        {% if posts.has_next %}<li><a href="{{ url_for('look', page = posts.next_num) }}">Older posts >></a></li>{% else %}<li><a href="#">Older posts >></a></li>{% endif %}
+            </ul>
+        </nav>
+    </div>
+</div>
+
 {% endblock %}

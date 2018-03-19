@@ -1,5 +1,5 @@
 from flask_wtf import Form
-from wtforms import StringField, BooleanField, TextAreaField, SubmitField, DateField
+from wtforms import StringField, BooleanField, TextAreaField, DateTimeField, DateField, SelectField
 from flask_wtf.file import FileField, FileAllowed, FileRequired
 from flask_pagedown.fields import PageDownField
 from wtforms.validators import DataRequired, Email, Length
@@ -68,3 +68,13 @@ class WcForm(Form):
     ])
     time1 = DateField('dt1')
     time2 = DateField('dt2')
+
+
+class Contest(Form):
+    title = StringField('title', validators=[DataRequired()])
+    body = TextAreaField('body', validators=[DataRequired()])
+    st = DateTimeField('st', validators=[DataRequired()])
+    choices1 = [('1', '30'), ('2', '60')]
+    lt = SelectField('lt', choices=choices1)
+    choices2 = [('1', '2'), ('2', '3')]
+    mp = SelectField('mp', choices=choices2)

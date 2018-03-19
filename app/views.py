@@ -2,8 +2,8 @@ from flask import *
 from flask_login import login_user, logout_user, current_user, login_required
 from .forms import *
 from app import app, db, lm, oid
-from .models import User, Post, Question, Card
-from datetime import datetime
+from .models import User, Post, Question, Card, Game, AttendGame
+from datetime import datetime, timedelta
 from config import POSTS_PER_PAGE, MAX_SEARCH_RESULTS, languageId, basedir
 from .run_code import pa_chong, make_wc
 import markdown, time
@@ -195,6 +195,7 @@ def search_results(query):
 
 @app.route('/look')
 @app.route('/look/<int:page>')
+@login_required
 def look(page=1):
     posts = Post.query.order_by(Post.timestamp.desc()).paginate(page, POSTS_PER_PAGE, False)
     return render_template('look.html',
@@ -203,6 +204,7 @@ def look(page=1):
 
 @app.route('/forum', methods=['POST', 'GET'])
 @app.route('/forum/<int:page>', methods=['POST', 'GET'])
+@login_required
 def forum(page=1):
     form = QuizForm()
     if form.validate():
@@ -224,6 +226,7 @@ def forum(page=1):
 
 @app.route('/discuss/<pk>', methods=['POST', 'GET'])
 @app.route('/discuss/<pk>/<int:page>', methods=['POST', 'GET'])
+@login_required
 def discuss(pk, page=1):
     form = CardForm()
     if form.validate():
@@ -245,6 +248,7 @@ def discuss(pk, page=1):
 
 
 @app.route('/code', methods=['POST', 'GET'])
+@login_required
 def code():
     """
     form = CompileForm()
@@ -277,6 +281,7 @@ def code():
 
 
 @app.route('/write', methods=['POST', 'GET'])
+@login_required
 def write():
     form = PageDownForm()
 
@@ -296,6 +301,7 @@ def write():
 
 
 @app.route('/article/<pk>', methods=['GET', 'POST'])
+@login_required
 def article(pk):
     a = Post.query.filter_by(id=pk)
     title = a[0].title
@@ -310,6 +316,7 @@ def article(pk):
 
 
 @app.route('/wordcloud', methods=['GET', 'POST'])
+@login_required
 def wc():
     form = WcForm()
     if form.validate_on_submit():
@@ -326,6 +333,69 @@ def wc():
 
 
 @app.route('/show_wordcloud', methods=['POST', 'GET'])
+@login_required
 def show_wc():
     return render_template('show.html',
                            val1=time.time())
+
+
+@app.route('/contest', methods=['POST', 'GET'])
+@app.route('/contest/<int:page>')
+@login_required
+def contest(page=1):
+    form = Contest()
+    games = Game.query.order_by(Game.timestamp.desc()).paginate(page, POSTS_PER_PAGE, False)
+
+    if form.validate_on_submit():
+        print(form.data)
+        lt = 60
+        if form.lt.data == '1':
+            lt = 30
+        mp = 3
+        if form.mp.data == '1':
+            mp = 2
+
+        end = form.st.data + timedelta(seconds=lt*60)
+        game = Game(problem_title=form.title.data, problem_description=form.body.data, start_time=form.st.data,
+                    end_time=end, long_time=lt, max_person=mp, timestamp=datetime.utcnow(), attend_person=1)
+        #db.session.add(game)
+        game.attenders.append(g.user)
+        db.session.add(game)
+        db.session.commit()
+        return redirect(url_for('contest', form=form, games=games))
+    return render_template('contest.html',
+                           form=form,
+                           games=games, datetime=datetime)
+
+
+@app.route('/contest/<title>/<gid>', methods=['POST', 'GET'])
+@login_required
+def contest_detail(title, gid):
+
+    if request.method == 'POST':
+        data = json.loads(request.form.get('data'))
+        content = data["code"]
+        print(content)
+        #attend = db.session.query(AttendGame).filter_by(game_id=gid, user_id=g.user.id)[0]
+        db.session.insert(AttendGame).values()
+        db.session.add(gg)
+        db.session.commit()
+        return ""
+    c = Game.query.filter_by(id=gid)[0]
+    users = c.attenders
+    print(users)
+    return render_template('contest_detail.html',
+                           c=c, users=users, datetime=datetime, title=title, gid=gid)
+
+
+
+
+
+
+
+
+
+
+
+
+

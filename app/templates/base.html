@@ -23,6 +23,7 @@
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
+
 </head>
 <body>
     <div class="nav nav-tabs">
@@ -32,9 +33,10 @@
     <li><a href="{{ url_for('write') }}">Write</a></li>
     <li><a href="{{ url_for('look') }}">Article</a></li>
     <li><a href="{{ url_for('forum') }}">Forum</a></li>
-    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+    <li><a href="{{ url_for('contest') }}">Contest</a></li>
     <li><a href="{{ url_for('code') }}">Compile</a></li>
     <li><a href="{{ url_for('wc') }}">WordCloud</a></li>
+    <li><a href="{{ url_for('logout') }}">Logout</a></li>
     <li>
 
         <form style="display: inline;" action="{{url_for('search')}}" method="post" name="search" class="form-inline">
@@ -50,11 +52,15 @@
 
     {% with messages = get_flashed_messages() %}
     {% if messages %}
-    <ul>
-    {% for message in messages %}
-        <li>{{ message }} </li>
-    {% endfor %}
-    </ul>
+    <div class="panel panel-info">
+        <div class="panel-body">
+            <ul>
+            {% for message in messages %}
+                <li>{{ message }} </li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
     {% endif %}
     {% endwith %}
     {% block content %}{% endblock %}
