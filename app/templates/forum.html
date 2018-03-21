@@ -2,35 +2,51 @@
 {% extends "base.html" %}
 
 {% block content %}
-<hr>
-<h1>Post Your Question</h1>
-<form action="" method="post" name="quiz">
-    {{form.hidden_tag()}}
-    <table>
-        <tr>
-            <td>Question Title:</td>
-            <td>
+<div class="panel panel-success">
+    <div class="panel-heading">
+        <h4 align="center">Post Your Question!</h4>
+    </div>
+    <div class="panel-body">
+        <form action="" method="post" name="quiz">
+            {{form.hidden_tag()}}
+
+            <div class="form-group">
+                <label for="title">Question Title:</label>
                 {{form.title(size = 24)}}
-            </td>
-        </tr>
-        <tr>
-            <td>More Details:</td>
-            <td>{{form.body(cols = 32, rows = 4)}}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td><input type="submit" value="Post it"></td>
-        </tr>
-    </table>
-</form>
-<!-- posts is a Paginate object -->
-{% for q in questions.items %}
-    <table>
-    <tr valign="top">
-        <td><i>{{q.timestamp}} says:</i><br> <a href="{{ url_for('discuss', pk = q.id) }}">{{q.title}}</a> </td>
-    </tr>
-    </table>
-{% endfor %}
-{% if questions.has_prev %}<a href="{{ url_for('forum', page = questions.prev_num) }}"><< Newer posts</a>{% else %}<< Newer posts{% endif %} |
-{% if questions.has_next %}<a href="{{ url_for('forum', page = questions.next_num) }}">Older posts >></a>{% else %}Older posts >>{% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="body">More Details:</label>
+                {{form.body(rows = 4)}}
+            </div>
+
+            <button type="submit" class="btn btn-default">Post it</button>
+        </form>
+    </div>
+
+    <div class="panel-footer">
+        <!-- posts is a Paginate object -->
+        {% for q in questions.items %}
+            <table class="table table-striped table-hover">
+            <tr valign="top">
+                <td><i>{{q.timestamp}} says:</i><br> <a href="{{ url_for('discuss', pk = q.id) }}">{{q.title}}</a> </td>
+            </tr>
+            </table>
+        {% endfor %}
+        <nav>
+            <ul class="pager">
+                {% if questions.has_prev %}<li><a href="{{ url_for('forum', page = questions.prev_num) }}"><< Newer posts</a></li>{% else %}<li><a href="#"><< Newer posts</a></li>{% endif %}
+                {% if questions.has_next %}<li><a href="{{ url_for('forum', page = questions.next_num) }}">Older posts >></a></li>{% else %}<li><a href="#">Older posts >></a></li>{% endif %}
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $("#title").addClass("form-control");
+        $("#body").addClass("form-control");
+        $("#body").css({"resize":"none"});
+    });
+</script>
 {% endblock %}

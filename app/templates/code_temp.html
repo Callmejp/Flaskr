@@ -140,8 +140,7 @@ $(".ck-code").click(function(){
                 dataType: 'json',
                 success:function(res){
                     //console.log(res);
-                    var result = res["errors"];
-                    if(res["errors"] == "")result = res["output"]
+                    var result = "output:\n" + res["output"] + "errors:" + res["errors"];
                     console.log(result);
                     editor2.setValue(result);
                 },

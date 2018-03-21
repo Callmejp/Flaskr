@@ -5,7 +5,7 @@ from app import app, db, lm, oid
 from .models import User, Post, Question, Card, Game, AttendGame
 from datetime import datetime, timedelta
 from config import POSTS_PER_PAGE, MAX_SEARCH_RESULTS, languageId, basedir
-from .run_code import pa_chong, make_wc
+from .run_code import pa_chong, make_wc, make_judge_wc
 import markdown, time
 
 
@@ -309,7 +309,15 @@ def article(pk):
     title = a[0].title
     body = a[0].body
     md = markdown.markdown(body)
-    html = '{% extends "base.html" %}{% block content %}<h1>标题：' + title + '<br>内容如下：</h1><div>' + str(md) + '</div>{% endblock %}'
+    html = '{% extends "base.html" %}' \
+           '{% block content %}' \
+           '<div class="panel panel-success">' \
+                '<div class="panel-heading">' \
+                    '<h3>' + title + '</h3>' \
+                '</div>' \
+                '<div class="panel-body">' + str(md) + '</div>' \
+            '</div>{% endblock %}'
+
     html = html.encode('utf-8')
     print(html)
     with open('app/templates/article.html', 'wb') as f:
@@ -321,24 +329,30 @@ def article(pk):
 @login_required
 def wc():
     form = WcForm()
-    if form.validate_on_submit():
-        print("come in")
-        pic = form.picture.data
-        pic.save(basedir + "\\app\\static\\try.jpg")
-        st_time = form.time1.data
-        ed_time = form.time2.data
-        data = Card.query.all()
-        make_wc(st_time, ed_time, data)
-        return redirect(url_for('show_wc'))
+    if request.method == 'POST':
+        if form.validate_on_submit():
+
+            pic = form.picture.data
+            pic.save(basedir + "\\app\\static\\try.jpg")
+            st_time = form.time1.data
+            ed_time = form.time2.data
+            data = Card.query.all()
+            make_wc(st_time, ed_time, data)
+            return redirect(url_for('show_wc', flag=1))
+        sql = "SELECT * FROM Judge WHERE judged_id='%s'" % (g.user.id)
+        rst = db.session.execute(sql)
+        rst = rst.fetchall()
+        make_judge_wc(rst)
+        return redirect(url_for('show_wc', flag=0))
     return render_template('wc.html',
                            form=form)
 
 
-@app.route('/show_wordcloud', methods=['POST', 'GET'])
+@app.route('/show_wordcloud/<flag>', methods=['POST', 'GET'])
 @login_required
-def show_wc():
-    return render_template('show.html',
-                           val1=time.time())
+def show_wc(flag):
+    #print("come in")
+    return render_template('show.html', val1=time.time(), flag=flag)
 
 
 @app.route('/contest', methods=['POST', 'GET'])
@@ -471,8 +485,6 @@ def handle_judge(judged_id, gid):
     rst = rst[0]
     #print(type(rst.code_content))
     return render_template('judge.html', judged_id=judged_id, gid=gid, code=rst.code_content)
-
-
 
 
 

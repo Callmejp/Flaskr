@@ -3,47 +3,63 @@
 
 {% block content %}
 <div class="panel panel-success">
-    <div class="panel-heading">If you upload the picture, it will be used to make WordPress</div>
+    <div class="panel-heading">Make the WordCloud from the forum</div>
 
     <div class="panel-body">
         <form action="" method="post" name="wc"  enctype="multipart/form-data">
             {{form.hidden_tag()}}
-        <div class="form-group">
-            <label for="picture">Upload Picture</label>
-            {{form.picture}}
+            <div class="form-group">
+                <label for="picture">Upload Picture</label>
+                {{form.picture}}
 
-            {% for error in form.picture.errors %}
-                 <span style="color: red;">{{ error }}</span>
-            {% endfor %}
-        </div>
-        <div class="form-group">
-            <label for="time1">Start Time(format:2010-9-10)</label>
-            {{form.time1}}
+                {% for error in form.picture.errors %}
+                     <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                <label for="time1">Start Time(format:2010-9-10)</label>
+                {{form.time1}}
 
-            {% for error in form.time1.errors %}
-                 <span style="color: red;">{{ error }}</span>
-            {% endfor %}
-        </div>
+                {% for error in form.time1.errors %}
+                     <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </div>
 
-        <div class="form-group">
-            <label for="time2">End Time</label>
-            {{form.time2}}
+            <div class="form-group">
+                <label for="time2">End Time</label>
+                {{form.time2}}
 
-            {% for error in form.time2.errors %}
-                 <span style="color: red;">{{ error }}</span>
-            {% endfor %}
-        </div>
-    <button type="submit" class="btn btn-default">Make it!</button>
+                {% for error in form.time2.errors %}
+                     <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <button type="submit" class="btn btn-default">Make it!</button>
     </form>
 
 
     </div>
 </div>
-    <script>
-        $(document).ready(function(){
-            $("#time1").addClass("form-control");
-            $("#time2").addClass("form-control");
-        });
-    </script>
+
+<div class="panel panel-success">
+    <div class="panel-heading">
+        Make the WordCloud that shows the comments about you
+    </div>
+
+    <div class="panel-body">
+        <form method="post">
+            <button type="submit" class="btn btn-default" id="judge">Make it!</button>
+        </form>
+
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $("#time1").addClass("form-control");
+        $("#time2").addClass("form-control");
+
+
+    });
+</script>
 
 {% endblock %}

@@ -1,13 +1,23 @@
-{% extends "base.html" %}{% block content %}<h1>标题：Markdown<br>内容如下：</h1><div><h1>h1</h1>
+{% extends "base.html" %}{% block content %}<div class="panel panel-success"><div class="panel-heading"><h3>Flask小论坛支持Markdown</h3></div><div class="panel-body"><h1>Markdown效果一览</h1>
+<h1>列表</h1>
 <ol>
 <li>1</li>
 <li>2</li>
 <li>3</li>
 </ol>
-<hr />
-<p><em>tilt</em> or <strong>strong</strong></p>
-<p>|dsa|das|
-|---|---|</p>
 <blockquote>
-<p>function() {}</p>
-</blockquote></div>{% endblock %}
+<p>这是一个code引用</p>
+<pre><code>funcition(){
+    print(1);
+}
+</code></pre>
+</blockquote>
+<p><strong>加粗文本</strong>或者<em>斜体文本</em></p>
+<p>这是行内式链接：<a href="http://connorlin.github.io">ConnorLin's Blog</a>。</p>
+<p>这是图片：<img alt="" src="https://connorlin.github.io/images/avatar.jpg" /></p>
+<p><font face="微软雅黑" color="red" size="6">字体及字体颜色和大小</font></p>
+<hr />
+<p>作者：ConnorLin
+链接：https://www.jianshu.com/p/82e730892d42
+來源：简书
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p></div></div>{% endblock %}

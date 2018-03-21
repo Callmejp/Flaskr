@@ -2,12 +2,52 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="panel panel-success">
-    <div class="panel-heading">WordPress Result</div>
+{% if flag == '1' %}
+    <div class="panel panel-success">
+        <div class="panel-heading">WordPress Result</div>
 
-    <div class="panel-body">
-       <img src="{{ url_for('static', filename='try.jpg', _t=val1) }}">
+        <div class="panel-body">
+           <img src="{{ url_for('static', filename='try.jpg', _t=val1) }}">
+        </div>
     </div>
-</div>
+{% else %}
+    <div class="panel panel-success">
+        <div class="panel-heading">WordPress Result</div>
+
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-6 col-md-4">
+                    <div class="thumbnail">
+                      <img src="{{ url_for('static', filename='try1.jpg', _t=val1) }}">
+                      <div class="caption">
+                        <h3>comments for format</h3>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-md-4">
+                    <div class="thumbnail">
+                      <img src="{{ url_for('static', filename='try2.jpg', _t=val1) }}">
+                      <div class="caption">
+                        <h3>comments for syntax</h3>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-md-4">
+                    <div class="thumbnail">
+                      <img src="{{ url_for('static', filename='try3.jpg', _t=val1) }}">
+                      <div class="caption">
+                        <h3>comments for idea</h3>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+{% endif %}
 
 {% endblock %}
