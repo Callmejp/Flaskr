@@ -52,7 +52,18 @@
         </div>
 
         <div role="tabpanel" class="tab-pane" id="user_game">
-
+            <table class="table">
+                <tr class="lead">
+                    <td>title</td>
+                    <td>still need</td>
+                    <td>start</td>
+                    <td>long</td>
+                    <td>status</td>
+                </tr>
+                {% for c in games %}
+                    {% include 'game.html' %}
+                {% endfor %}
+            </table>
         </div>
     </div>
 

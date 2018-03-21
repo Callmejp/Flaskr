@@ -1,0 +1,49 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+<link href="{{url_for('static', filename='codemirror.css') }}" rel="stylesheet" >
+<script src="{{url_for('static', filename='codemirror.js') }}"></script>
+<script src="{{url_for('static', filename='clike.js') }}"></script>
+
+<!-- posts is a Paginate object -->
+<div class="panel panel-success">
+    <div class="panel-heading">You can now judge !</div>
+    <div class="panel-body">
+        <textarea id="code_area" class="form-control" rows="10">
+            {{code}}
+        </textarea>
+    </div>
+    <div class="panel-footer">
+        <form action="" method="post">
+            <div class="form-group">
+                <label for="attender">被评价选手id</label>
+                <input type="text" class="form-control" id="attender" disabled="disabled" placeholder="{{judged_id}}">
+            </div>
+
+            <div class="form-group">
+                <label for="format">评价代码格式规范性</label>
+                <input type="text" class="form-control" name="format" placeholder="比如：规整、不合格">
+            </div>
+
+            <div class="form-group">
+                <label for="syntax">评价代码语法</label>
+                <input type="text" class="form-control" name="syntax" placeholder="比如：几乎正确、scanf有错误">
+            </div>
+
+            <div class="form-group">
+                <label for="idea">评价代码思路</label>
+                <input type="text" class="form-control" name="idea" placeholder="比如：思路复杂、代码复杂度低">
+            </div>
+            <button type="submit" class="btn btn-info">Post</button>
+        </form>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        $("#code_area").css({"resize":"none","overflow":"scroll"});
+    });
+</script>
+
+{% endblock %}
+

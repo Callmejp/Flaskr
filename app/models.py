@@ -8,11 +8,17 @@ followers = db.Table('followers',
     db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
 )
 
-
 AttendGame = db.Table('AttendGame',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
     db.Column('game_id', db.Integer, db.ForeignKey('game.id')),
     db.Column('code_content', db.String(1000))
+)
+
+Judge = db.Table('Judge',
+    db.Column('judged_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('game_id', db.Integer, db.ForeignKey('game.id')),
+    db.Column('judger_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('comment', db.String(1000))
 )
 
 

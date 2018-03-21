@@ -109,9 +109,11 @@ def user(nickname, page=1):
         flash('User %s not found.' % nickname)
         return redirect(url_for('index'))
     posts = user.posts.paginate(page, POSTS_PER_PAGE, False)
+    games = user.games.order_by(Game.timestamp.desc()).all()
+    #print(games)
     return render_template('user.html',
-                           user=user,
-                           posts=posts)
+                           user=user, posts=posts,
+                           games=games, datetime=datetime)
 
 
 @app.route('/edit', methods=['GET', 'POST'])
@@ -368,26 +370,107 @@ def contest(page=1):
                            games=games, datetime=datetime)
 
 
+#contest_detail
+
 @app.route('/contest/<title>/<gid>', methods=['POST', 'GET'])
 @login_required
 def contest_detail(title, gid):
+    c = Game.query.filter_by(id=gid)[0]
 
     if request.method == 'POST':
+        if c.end_time < datetime.now():
+            flash("Contest has been ended!")
+            return redirect(url_for('contest'))
+
         data = json.loads(request.form.get('data'))
         content = data["code"]
         print(content)
         #attend = db.session.query(AttendGame).filter_by(game_id=gid, user_id=g.user.id)[0]
-        db.session.insert(AttendGame).values()
-        db.session.add(gg)
+        #print(attend)
+        sql = "UPDATE AttendGame SET code_content = '%s' WHERE game_id=%s and user_id=%s" % (content, gid, g.user.id)
+        db.session.execute(sql)
         db.session.commit()
-        return ""
-    c = Game.query.filter_by(id=gid)[0]
+        return "123"
+
+    sql = "SELECT * FROM AttendGame WHERE game_id='%s'" % (gid)
+    rst = db.session.execute(sql)
+    rst = rst.fetchall()
+    print(rst)
+
     users = c.attenders
     print(users)
+
+    for u in users:
+        for r in rst:
+            if u.id == r.user_id:
+                u.code = r.code_content
+
     return render_template('contest_detail.html',
                            c=c, users=users, datetime=datetime, title=title, gid=gid)
 
 
+@app.route('/handle_join/<gid>', methods=['POST', 'GET'])
+@login_required
+def handle_join(gid):
+    #self.followed.filter(followers.c.followed_id == user.id).count() > 0
+    sql = "SELECT * FROM AttendGame WHERE game_id='%s' and user_id='%s'" % (gid, g.user.id)
+    rst = db.session.execute(sql)
+    rst = rst.fetchone()
+    print(rst)
+    if rst:
+        flash("You have been joined, don't join repeatedly!")
+        return redirect(url_for('contest'))
+    game = Game.query.filter_by(id=gid).first()
+    game.attend_person = game.attend_person + 1
+    g.user.games.append(game)
+    db.session.add(g.user)
+    db.session.commit()
+    flash("Successfully joined!")
+    return redirect(url_for('contest'))
+
+
+@app.route('/handle_judge/<judged_id>/<gid>', methods=['POST', 'GET'])
+@login_required
+def handle_judge(judged_id, gid):
+    game = Game.query.filter_by(id=gid).first()
+    users = game.attenders
+    if request.method == 'POST':
+        flag = 1
+        for u in users:
+            if u.id == g.user.id:
+                flag = 0
+
+        if g.user.id == int(judged_id) or flag:
+            print("dasdadad")
+            flash("You are not allowed to judge his code!")
+            return redirect(url_for('contest'))
+
+        pattern = request.form.get('format')
+        syntax = request.form.get('syntax')
+        idea = request.form.get('idea')
+        print(pattern, syntax, idea)
+        sql = "SELECT * FROM Judge WHERE game_id='%s' and judger_id='%s' and judged_id='%s'" % (gid, g.user.id, judged_id)
+        rst = db.session.execute(sql)
+        rst = rst.fetchall()
+        print(rst)
+        if rst != []:
+            flash("You have judged his code")
+            return redirect(url_for('contest'))
+
+        comment = pattern + "*" + syntax + "*" + idea
+        print(comment)
+        sql = "INSERT INTO Judge(judged_id, game_id, judger_id, comment) " \
+              "VAlUES('%s', '%s', '%s', '%s')" % (judged_id, gid, g.user.id, comment)
+        db.session.execute(sql)
+        db.session.commit()
+        flash("Successfully judged!")
+        return redirect(url_for('contest'))
+    sql = "SELECT * FROM AttendGame WHERE game_id='%s' and user_id='%s'" % (gid,  judged_id)
+    rst = db.session.execute(sql)
+    rst = rst.fetchall()
+    rst = rst[0]
+    #print(type(rst.code_content))
+    return render_template('judge.html', judged_id=judged_id, gid=gid, code=rst.code_content)
 
 
 

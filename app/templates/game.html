@@ -12,4 +12,9 @@
             <button type="button" class="btn btn-danger">Running</button>
         {% endif %}
     </td>
+    <td>
+        {% if datetime.now() < c.start_time and (c.max_person - c.attend_person) > 0 %}
+            <button class="btn btn-success" id="join"><a href="{{url_for('handle_join', gid=c.id)}}">Join</a></button>
+        {% endif %}
+    </td>
 </tr>
