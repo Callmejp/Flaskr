@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from app import db, app
 from hashlib import md5
 from jieba.analyse.analyzer import ChineseAnalyzer

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import jieba
 from wordcloud import *
 from urllib import request, parse
