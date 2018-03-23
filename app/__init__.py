@@ -1,7 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-from flask_openid import *
 from config import *
 import flask_whooshalchemyplus
 from flask_whooshalchemyplus import index_all
@@ -14,7 +13,6 @@ db = SQLAlchemy(app)
 lm = LoginManager()
 lm.init_app(app)
 lm.login_view = 'login'
-oid = OpenID(app, os.path.join(basedir, 'tmp'))
 
 flask_whooshalchemyplus.init_app(app)
 index_all(app)

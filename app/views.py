@@ -2,7 +2,7 @@
 from flask import *
 from flask_login import login_user, logout_user, current_user, login_required
 from .forms import *
-from app import app, db, lm, oid
+from app import app, db, lm
 from .models import User, Post, Question, Card, Game, AttendGame
 from datetime import datetime, timedelta
 from config import POSTS_PER_PAGE, MAX_SEARCH_RESULTS, languageId, basedir

@@ -103,7 +103,7 @@ class User(db.Model):
 
 class Post(db.Model):
     __searchable__ = ['body', 'title']
-    #__analyzer__ = ChineseAnalyzer()
+    __analyzer__ = ChineseAnalyzer()
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100))
@@ -117,7 +117,7 @@ class Post(db.Model):
 
 class Question(db.Model):
     __searchable__ = ['title']
-    #__analyzer__ = ChineseAnalyzer()
+    __analyzer__ = ChineseAnalyzer()
 
     id = db.Column(db.Integer, primary_key=True)
     timestamp = db.Column(db.DateTime)
@@ -129,8 +129,9 @@ class Question(db.Model):
         return '<Question %r>' % (self.title)
 
 
-whooshalchemy.whoosh_index(app, Question)
 whooshalchemy.whoosh_index(app, Post)
+whooshalchemy.whoosh_index(app, Question)
+
 
 
 class Card(db.Model):

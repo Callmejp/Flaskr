@@ -49,7 +49,7 @@ def make_wc(st, ed, data):
     print(wl_space_split)
 
     # 对分词后的文本生成词云
-    font = r'C:\Windows\Fonts\simfang.ttf'
+    font = 'SIMYOU.TTF'
     my_wordcloud = WordCloud(
         background_color='white',
         font_path=font
@@ -80,7 +80,7 @@ def make_judge_wc_picture(tid):
     print(wl_space_split)
 
     # 对分词后的文本生成词云
-    font = r'C:\Windows\Fonts\simfang.ttf'
+    font = 'SIMYOU.TTF'
     my_wordcloud = WordCloud(
         background_color='white',
         font_path=font
