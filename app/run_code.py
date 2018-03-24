@@ -8,6 +8,7 @@ import Image
 import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
+font = basedir + '\\static\\SIMYOU.TTF'
 
 
 def pa_chong(d):
@@ -49,7 +50,7 @@ def make_wc(st, ed, data):
     print(wl_space_split)
 
     # 对分词后的文本生成词云
-    font = 'SIMYOU.TTF'
+
     my_wordcloud = WordCloud(
         background_color='white',
         font_path=font
@@ -79,8 +80,6 @@ def make_judge_wc_picture(tid):
     wl_space_split = " ".join(wordlist)
     print(wl_space_split)
 
-    # 对分词后的文本生成词云
-    font = 'SIMYOU.TTF'
     my_wordcloud = WordCloud(
         background_color='white',
         font_path=font

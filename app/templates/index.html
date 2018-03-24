@@ -2,16 +2,28 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 class="lead">Hi, {{g.user.nickname}}!</h1>
-<p class="lead">以下是关注用户的文章最新动态</p>
-<!-- posts is a Paginate object -->
-{% for post in posts.items %}
-    {% include 'post.html' %}
-{% endfor %}
-<nav>
-    <ul class="pager">
-{% if posts.has_prev %}<li><a href="{{ url_for('index', page = posts.prev_num) }}"><< Newer posts</a></li>{% else %}<li><a href="#"><< Newer posts</a></li>{% endif %}
-{% if posts.has_next %}<li><a href="{{ url_for('index', page = posts.next_num) }}">Older posts >></a></li>{% else %}<li><a href="#">Older posts >></a></li>{% endif %}
-    </ul>
-</nav>
+<div class="panel panel-success">
+    <div class="panel-heading">
+        <h4>Hi, {{g.user.nickname}}!</h4>
+    </div>
+    <div class="panel-body">
+        <!-- posts is a Paginate object -->
+        {% for post in posts.items %}
+            {% include 'post.html' %}
+        {% endfor %}
+        <nav>
+            <ul class="pager">
+        {% if posts.has_prev %}<li><a href="{{ url_for('index', page = posts.prev_num) }}"><< Newer posts</a></li>{% else %}<li><a href="#"><< Newer posts</a></li>{% endif %}
+        {% if posts.has_next %}<li><a href="{{ url_for('index', page = posts.next_num) }}">Older posts >></a></li>{% else %}<li><a href="#">Older posts >></a></li>{% endif %}
+            </ul>
+        </nav>
+
+    </div>
+    <div class="panel-footer">
+        <p class="lead">以上是关注用户的文章最新动态</p>
+    </div>
+</div>
+
+
+
 {% endblock %}

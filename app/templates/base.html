@@ -25,30 +25,43 @@
 
 
 </head>
-<body>
-    <div class="nav nav-tabs">
-    <li><a href="{{ url_for('index') }}">Home</a></li>
-    {% if g.user.is_authenticated %}
-    <li><a href="{{ url_for('user', nickname = g.user.nickname) }}">Your Profile</a></li>
-    <li><a href="{{ url_for('write') }}">Write</a></li>
-    <li><a href="{{ url_for('look') }}">Article</a></li>
-    <li><a href="{{ url_for('forum') }}">Forum</a></li>
-    <li><a href="{{ url_for('contest') }}">Contest</a></li>
-    <li><a href="{{ url_for('code') }}">Compile</a></li>
-    <li><a href="{{ url_for('wc') }}">WordCloud</a></li>
-    <li><a href="{{ url_for('logout') }}">Logout</a></li>
-    <li>
-
-        <form style="display: inline;" action="{{url_for('search')}}" method="post" name="search" class="form-inline">
-            <div class="form-group">
-                {{g.search_form.hidden_tag()}}{{g.search_form.search(size=20)}}
-
+<body style="background:#EAEAEA">
+    <nav class="navbar navbar-inverse" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Easier</a>
             </div>
-            <input type="submit"  class="form-control" value="Search">
-        </form>
-    </li>
-    {% endif %}
-    </div>
+            <div>
+                {% if g.user.is_authenticated %}
+                <ul class="nav navbar-nav">
+                    <li><a href="{{ url_for('index') }}">Home</a></li>
+
+
+                    <li><a href="{{ url_for('write') }}">Write</a></li>
+                    <li><a href="{{ url_for('look') }}">Article</a></li>
+                    <li><a href="{{ url_for('forum') }}">Forum</a></li>
+                    <li><a href="{{ url_for('contest') }}">Contest</a></li>
+                    <li><a href="{{ url_for('code') }}">Compile</a></li>
+                    <li><a href="{{ url_for('wc') }}">WordCloud</a></li>
+
+
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{{ url_for('user', nickname = g.user.nickname) }}">Your Profile</a></li>
+                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                </ul>
+                {% endif %}
+            </div>
+
+            <form class="navbar-form navbar-right" role="search" action="{{url_for('search')}}" method="post" name="search">
+                <div class="form-group">
+                    {{g.search_form.hidden_tag()}}{{g.search_form.search(size=20)}}
+
+                </div>
+                <input type="submit"  class="form-control" value="Search">
+            </form>
+        </div>
+    </nav>
 
     {% with messages = get_flashed_messages() %}
     {% if messages %}

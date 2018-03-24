@@ -239,7 +239,7 @@ def discuss(pk, page=1):
         flash('Your answer is now live!')
         return redirect(url_for('discuss', pk=pk))
 
-    cards = Card.query.filter_by(question_id=pk).order_by(Card.timestamp).paginate(page, POSTS_PER_PAGE, False)
+    cards = Card.query.filter_by(question_id=pk).order_by(Card.timestamp.desc()).paginate(page, POSTS_PER_PAGE, False)
     question = Question.query.filter_by(id=pk)
     title = question[0].title
     #print(cards[0].body)

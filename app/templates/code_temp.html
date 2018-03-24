@@ -134,7 +134,7 @@ $(".ck-code").click(function(){
                 }),
             }
                 $.ajax({
-                url:'http://localhost:5000/code',
+                url:"{{url_for('code')}}",
                 type:'POST',
                 data:data,
                 dataType: 'json',
