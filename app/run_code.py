@@ -4,7 +4,7 @@ from wordcloud import *
 from urllib import request, parse
 from config import url, headers
 import matplotlib.pyplot as plt
-import Image
+from PIL import Image
 import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
