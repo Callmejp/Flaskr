@@ -7,9 +7,17 @@
 <div class="panel panel-success">
     <div class="panel-heading">You can see the articles writen by all users there!</div>
     <div class="panel-body">
-        {% for post in posts.items %}
-            {% include 'post.html' %}
-        {% endfor %}
+        <table class="table table-striped table-hover">
+            <tr>
+                <td>User's Image</td>
+                <td>User's Post</td>
+            </tr>
+            <!-- posts is a Paginate object -->
+            {% for post in posts.items %}
+                {% include 'post.html' %}
+            {% endfor %}
+        </table>
+
         <nav>
             <ul class="pager">
         {% if posts.has_prev %}<li><a href="{{ url_for('look', page = posts.prev_num) }}"><< Newer posts</a></li>{% else %}<li><a href="#"><< Newer posts</a></li>{% endif %}
