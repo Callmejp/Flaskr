@@ -29,14 +29,11 @@
     <nav class="navbar navbar-inverse" role="navigation">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#">Easier</a>
+                <a class="navbar-brand" href="{{ url_for('index') }}">Easier</a>
             </div>
             <div>
                 {% if g.user.is_authenticated %}
                 <ul class="nav navbar-nav">
-                    <li><a href="{{ url_for('index') }}">Home</a></li>
-
-
                     <li><a href="{{ url_for('write') }}">Write</a></li>
                     <li><a href="{{ url_for('look') }}">Article</a></li>
                     <li><a href="{{ url_for('forum') }}">Forum</a></li>

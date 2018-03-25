@@ -8,7 +8,8 @@ from PIL import Image
 import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
-font = basedir + '\\static\\SIMYOU.TTF'
+font = "C:/Windows/Fonts/STFANGSO.ttf"
+
 
 
 def pa_chong(d):
